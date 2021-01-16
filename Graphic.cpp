@@ -44,6 +44,7 @@ void graphic::GeneratorEdge(int n){
 					nodes[num2].getPointX(), \
 					nodes[num2].getPointY()
 				 );
+		std::cout<<i<<std::endl;
 	}
 }
 void graphic::ShowGraphic(void){
