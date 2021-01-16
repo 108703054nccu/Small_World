@@ -23,6 +23,19 @@ graphic::graphic(){
 
 graphic::~graphic(){;}
 
+void graphic::Dijkstra_Algorithm(int n1, int n2){
+	int short_way_table [Node_Num-1][3];
+	for(int i = 0; i<Node_Num; i++){
+		if(i != n1-1){
+			short_way_table[i][0] = i+1;
+			short_way_table[i][1] = distance[n1][i];
+			if(short_way_table[i][1] != -1)short_way_table[i][2] = n1;
+			else short_way_table[i][2] = 0; 
+		}
+	}
+	//do update motion
+	//output end
+}//n1 ,n2 1~1000
 void graphic::GeneratorEdge(int n){
 	srand(time (NULL));
 	int num1;
@@ -44,7 +57,6 @@ void graphic::GeneratorEdge(int n){
 					nodes[num2].getPointX(), \
 					nodes[num2].getPointY()
 				 );
-		std::cout<<i<<std::endl;
 	}
 }
 void graphic::ShowGraphic(void){

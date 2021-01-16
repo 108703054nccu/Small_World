@@ -8,7 +8,7 @@ int main(int argc, char** argv){
 	graphic g;
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_SINGLE);
-	glutInitWindowSize(400, 300);
+	glutInitWindowSize(500, 500);
 	glutInitWindowPosition(100, 100);
 	glutCreateWindow("Draw_Result");
 	glutDisplayFunc(displayMe);
