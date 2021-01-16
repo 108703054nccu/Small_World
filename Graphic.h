@@ -3,7 +3,7 @@
 #include "Node.h"
 #include "Draw_Funtion.h"
 #define Node_Num 1000
-#define Circle_R 20
+#define Circle_R 1
 class graphic:public draw_funtion{
 	public:
 		graphic();

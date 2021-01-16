@@ -4,6 +4,7 @@
 #define PI 3.1415926
 
 graphic::graphic(){
+	//
 	for(int i = 0; i<Node_Num; i++){
 		nodes[i].setID(i+1);
 		nodes[i].setPoint( \
