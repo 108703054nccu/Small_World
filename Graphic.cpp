@@ -19,7 +19,6 @@ graphic::~graphic(){;}
 
 void graphic::ShowGraphic(void){
 	glClear(GL_COLOR_BUFFER_BIT);
-	glBegin(GL_LINES);
 	for(int i = 0; i<Node_Num; i++){
 		if(i+1<Node_Num){
 		draw_line( \
@@ -39,7 +38,6 @@ void graphic::ShowGraphic(void){
 
 		}
 	}
-	glEnd();
 	glFlush();
 	return ;
 }

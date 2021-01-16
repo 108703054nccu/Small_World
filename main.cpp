@@ -2,11 +2,9 @@
 #include "Graphic.h"
 void displayMe(void)
 {
+	graphic g;
 	glClear(GL_COLOR_BUFFER_BIT);
-	glBegin(GL_LINES);
-	glVertex2f(10, 20);
-	glVertex2f(20, 20);
-	glEnd();
+	g.ShowGraphic();
 	glFlush();
 }
 int main(int argc, char** argv){
