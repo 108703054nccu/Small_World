@@ -7,8 +7,8 @@ graphic::graphic(){
 	for(int i = 0; i<Node_Num; i++){
 		nodes[i].setID(i+1);
 		nodes[i].setPoint( \
-				Circle_R*(2*PI/1000), \
-				Circle_R*(2*PI/1000) \
+				Circle_R*(cos(2*PI*i/1000)), \
+				Circle_R*(sin(2*PI*i/1000)) \
 				);
 		distance[i%Node_Num][(i+1)%Node_Num] = 1;
 		distance[(i+1)%Node_Num][i%Node_Num] = 1;
