@@ -8,6 +8,7 @@ class graphic:public draw_funtion{
 	public:
 		graphic();
 		~graphic();
+		void GeneratorEdge(int);
 		void ShowGraphic(void);
 	private:
 		node nodes[Node_Num];
