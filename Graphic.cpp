@@ -4,6 +4,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
+#include <climits>
 #define PI 3.1415926
 
 graphic::graphic(){
@@ -22,20 +23,48 @@ graphic::graphic(){
 }
 
 graphic::~graphic(){;}
-
 void graphic::Dijkstra_Algorithm(int n1, int n2){
-	int short_way_table [Node_Num-1][3];
+	int short_path_table[Node_Num][2];
+	int dismatrix[Node_Num][Node_Num];
+	int minpoint = n1;
+	int minedge = INT_MAX; 
 	for(int i = 0; i<Node_Num; i++){
-		if(i != n1-1){
-			short_way_table[i][0] = i+1;
-			short_way_table[i][1] = distance[n1][i];
-			if(short_way_table[i][1] != -1)short_way_table[i][2] = n1;
-			else short_way_table[i][2] = 0; 
+		if( i+1 == n1){
+			short_path_table[i][0] = n1;
+			short_path_table[i][1] = 0; 
+		}
+		short_path_table[i][0] = i+1;
+		short_path_table[i][1] = INT_MAX; 
+	}
+	for(int i = 0; i<Node_Num; i++){
+		for(int j = 0; j<Node_Num; j++){
+			dismatrix[i][j] = distance[i][j];
 		}
 	}
-	//do update motion
-	//output end
-}//n1 ,n2 1~1000
+	while(minpoint != n2){
+		for(int i = 0; i<Node_Num; i++){
+			if(short_path_table[i][1] >= 0){
+				if(dismatrix[i][minpoint-1] > 0 && \
+						dismatrix[i][minpoint-1]+short_path_table[minpoint-1][1] < \
+						short_path_table[i][1]){
+					short_path_table[i][1] = \
+								 dismatrix[i][minpoint-1]+short_path_table[minpoint-1][1]; 
+				}	
+				dismatrix[i][minpoint-1] = -2;
+				dismatrix[minpoint-1][i] = -2;
+			}
+		}
+		short_path_table[minpoint-1][1] = -1;
+		for(int i =0; i<Node_Num ;i++){
+			if(short_path_table[i][1] >= 0 && \
+					short_path_table[i][1] < minedge){
+				minpoint = i+1; 
+			}
+		}
+	}
+
+	std::cout<<short_path_table[minpoint][1];
+}//n1 ,n2 1~1000;ischanged = -2;not arrive = -1
 void graphic::GeneratorEdge(int n){
 	srand(time (NULL));
 	int num1;
@@ -52,11 +81,11 @@ void graphic::GeneratorEdge(int n){
 			distance[num2][num1] = d;
 		}
 		draw_line( \
-					nodes[num1].getPointX(), \
-					nodes[num1].getPointY(), \
-					nodes[num2].getPointX(), \
-					nodes[num2].getPointY()
-				 );
+				nodes[num1].getPointX(), \
+				nodes[num1].getPointY(), \
+				nodes[num2].getPointX(), \
+				nodes[num2].getPointY()
+			 );
 	}
 }
 void graphic::ShowGraphic(void){
@@ -80,6 +109,7 @@ void graphic::ShowGraphic(void){
 		}
 	}
 	GeneratorEdge(100);
+	Dijkstra_Algorithm(1, 200);
 	glFlush();
 	return ;
 }
