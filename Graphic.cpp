@@ -10,12 +10,12 @@
 graphic::graphic(){
 	for(int i = 0; i<Node_Num; i++)
 		for(int j = 0; j<Node_Num; j++)
-			distance[i][j] = -1;
+			distance[i][j] = 1e9;
 	for(int i = 0; i<Node_Num; i++){
 		nodes[i].setID(i+1);
 		nodes[i].setPoint( \
-				Circle_R*(cos(2*PI*i/1000)), \
-				Circle_R*(sin(2*PI*i/1000)) \
+				Circle_R*(cos(2*PI*i/Node_Num)), \
+				Circle_R*(sin(2*PI*i/Node_Num)) \
 				);
 		distance[i%Node_Num][(i+1)%Node_Num] = 1;
 		distance[(i+1)%Node_Num][i%Node_Num] = 1;
@@ -23,60 +23,51 @@ graphic::graphic(){
 }
 
 graphic::~graphic(){;}
-void graphic::Dijkstra_Algorithm(int n1, int n2){
-	int short_path_table[Node_Num][2];
-	int dismatrix[Node_Num][Node_Num];
-	int minpoint = n1;
-	int minedge = INT_MAX; 
-	for(int i = 0; i<Node_Num; i++){
-		if( i+1 == n1){
-			short_path_table[i][0] = n1;
-			short_path_table[i][1] = 0; 
-		}
-		short_path_table[i][0] = i+1;
-		short_path_table[i][1] = INT_MAX; 
-	}
-	for(int i = 0; i<Node_Num; i++){
-		for(int j = 0; j<Node_Num; j++){
-			dismatrix[i][j] = distance[i][j];
-		}
-	}
-	while(minpoint != n2){
-		for(int i = 0; i<Node_Num; i++){
-			if(short_path_table[i][1] >= 0){
-				if(dismatrix[i][minpoint-1] > 0 && \
-						dismatrix[i][minpoint-1]+short_path_table[minpoint-1][1] < \
-						short_path_table[i][1]){
-					short_path_table[i][1] = \
-								 dismatrix[i][minpoint-1]+short_path_table[minpoint-1][1]; 
-				}	
-				dismatrix[i][minpoint-1] = -2;
-				dismatrix[minpoint-1][i] = -2;
-			}
-		}
-		short_path_table[minpoint-1][1] = -1;
-		for(int i =0; i<Node_Num ;i++){
-			if(short_path_table[i][1] >= 0 && \
-					short_path_table[i][1] < minedge){
-				minpoint = i+1; 
-			}
-		}
-	}
+int graphic::Dijkstra_Algorithm(int n1,int n2){
+	int src = n1 -1;
+	int tar = n2 -1;
+	int d[Node_Num];       
+	int parent[Node_Num];  
+	bool visit[Node_Num];  
+	for (int i=0; i<Node_Num; i++) visit[i] = false;
+	for (int i=0; i<Node_Num; i++) d[i] = 1e9;
 
-	std::cout<<short_path_table[minpoint][1];
-}//n1 ,n2 1~1000;ischanged = -2;not arrive = -1
+	d[src] = 0;
+	parent[src] = src;
+
+	for (int k=0; k<Node_Num; k++)
+	{
+		int a = -1, b = -1, min = 1e9;
+		for (int i=0; i<Node_Num; i++)
+			if (!visit[i] && d[i] < min)
+			{
+				a = i;  
+				min = d[i];
+			}
+
+		if (a == -1) break;     
+		if (min == 1e9) break;  
+		visit[a] = true;
+		for (b=0; b<Node_Num; b++)
+			if (!visit[b] && d[a] + distance[a][b] < d[b])
+			{
+				d[b] = d[a] + distance[a][b];
+				parent[b] = a;
+			}
+	}
+	for(int i = 0; i<Node_Num;i++)if(i == tar)return d[i];
+}
 void graphic::GeneratorEdge(int n){
 	srand(time (NULL));
 	int num1;
 	int num2;
-	int d;
+	int d = rand() %100+1;
 	for(int i = 0; i<n; i++){
-		num1 = rand()%1000;
-		num2 = rand()%1000;
+		num1 = rand()%Node_Num;
+		num2 = rand()%Node_Num;
 		if(distance[num1][num2] == -1 &&  \
 				distance [num2][num1] == -1 && \
 				num1 != num2){
-			d = rand() %100+1;
 			distance[num1][num2] = d;
 			distance[num2][num1] = d;
 		}
@@ -89,6 +80,11 @@ void graphic::GeneratorEdge(int n){
 	}
 }
 void graphic::ShowGraphic(void){
+	srand( time( NULL));
+	int src;
+	int tar;
+	int dat_num = 0;
+	int total_path = 0;
 	for(int i = 0; i<Node_Num; i++){
 		if(i+1<Node_Num){
 			draw_line( \
@@ -108,8 +104,12 @@ void graphic::ShowGraphic(void){
 
 		}
 	}
-	GeneratorEdge(100);
-	Dijkstra_Algorithm(1, 200);
+	GeneratorEdge(rand()%200);
+	while(std::cin>>src>>tar){
+		std::cout<<src<<" "<<tar<<" :"<<Dijkstra_Algorithm(src,tar)<<std::endl;
+		dat_num ++;
+	}
+	//std::cout<<dat_num<<" datas length :"<<total_path/dat_num<<std::endl;
 	glFlush();
 	return ;
 }

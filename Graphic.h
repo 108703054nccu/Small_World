@@ -10,7 +10,7 @@ class graphic:public draw_funtion{
 		~graphic();
 		void GeneratorEdge(int);
 		void ShowGraphic(void);
-		void Dijkstra_Algorithm(int, int);
+		int Dijkstra_Algorithm(int,int);
 	private:
 		node nodes[Node_Num];
 		int distance[Node_Num][Node_Num];
