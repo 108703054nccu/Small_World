@@ -11,6 +11,7 @@ class graphic:public draw_funtion{
 		void GeneratorEdge(int);
 		void ShowGraphic(void);
 		int Dijkstra_Algorithm(int,int);
+		int dijkstra_with_priority_queue(int,int);
 	private:
 		node nodes[Node_Num];
 		int distance[Node_Num][Node_Num];

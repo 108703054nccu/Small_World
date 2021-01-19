@@ -2,6 +2,7 @@
 #include <cmath>
 #include <GL/glut.h>
 #include <iostream>
+#include <queue>
 #include <cstdlib>
 #include <ctime>
 #include <climits>
@@ -21,7 +22,37 @@ graphic::graphic(){
 		distance[(i+1)%Node_Num][i%Node_Num] = 1;
 	}
 }
+struct Node {int b, d;};
+bool operator<(Node n1, Node n2) {return n1.d > n2.d;}
 
+int graphic::dijkstra_with_priority_queue(int n1,int n2){
+	int src = n1-1;
+	int tar = n2-1;
+	int d[Node_Num];
+	int parent[Node_Num];
+	bool visit[Node_Num];
+	for (int i=0; i<Node_Num; i++) visit[i] = false;
+	for (int i=0; i<Node_Num; i++) d[i] = 1e9;
+	std::priority_queue<Node> pq;
+	d[src] = 0;
+	parent[src] = src;
+	pq.push((Node){src, d[src]});
+	for (int i=0; i<Node_Num; i++)
+	{
+		int a = -1;
+		while (!pq.empty() && visit[a = pq.top().b])pq.pop();   
+		if (a == -1) break;
+		visit[a] = true;
+		for (int b=0; b<Node_Num; b++)
+			if (!visit[b] && d[a] + distance[a][b] < d[b])
+			{
+				d[b] = d[a] + distance[a][b];
+				parent[b] = a;
+				pq.push( (Node){b, d[b]} );
+			}
+	}
+	for(int i = 0; i<Node_Num;i++)if(i == tar)return d[i];
+}
 graphic::~graphic(){;}
 int graphic::Dijkstra_Algorithm(int n1,int n2){
 	int src = n1 -1;
