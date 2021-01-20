@@ -6,6 +6,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <climits>
+#include <vector>
 #define PI 3.1415926
 
 graphic::graphic(){
@@ -88,11 +89,11 @@ int graphic::Dijkstra_Algorithm(int n1,int n2){
 	}
 	for(int i = 0; i<Node_Num;i++)if(i == tar)return d[i];
 }
-void graphic::GeneratorEdge(int n){
+int graphic::GeneratorEdge(int n){
 	srand(time (NULL));
 	int num1;
 	int num2;
-	int d = rand() %100+1;
+	int d = rand()%10+1;
 	for(int i = 0; i<n; i++){
 		num1 = rand()%Node_Num;
 		num2 = rand()%Node_Num;
@@ -102,13 +103,16 @@ void graphic::GeneratorEdge(int n){
 			distance[num1][num2] = d;
 			distance[num2][num1] = d;
 		}
+		/*
 		draw_line( \
 				nodes[num1].getPointX(), \
 				nodes[num1].getPointY(), \
 				nodes[num2].getPointX(), \
 				nodes[num2].getPointY()
 			 );
+		*/
 	}
+	return d;
 }
 void graphic::ShowGraphic(void){
 	srand( time( NULL));
@@ -116,6 +120,15 @@ void graphic::ShowGraphic(void){
 	int tar;
 	int dat_num = 0;
 	int total_path = 0;
+	int total_path_q = 0;
+	int edge = 0;
+	int length = 0;
+	int time_of_array;
+	int time_of_queue;
+	int a,b;
+	std::vector<int> all_in_data_src;
+	std::vector<int> all_in_data_tar;
+	/*
 	for(int i = 0; i<Node_Num; i++){
 		if(i+1<Node_Num){
 			draw_line( \
@@ -135,12 +148,32 @@ void graphic::ShowGraphic(void){
 
 		}
 	}
-	GeneratorEdge(rand()%200);
+	*/
+	edge = 100;
+	length = GeneratorEdge(edge);
 	while(std::cin>>src>>tar){
-		std::cout<<src<<" "<<tar<<" :"<<Dijkstra_Algorithm(src,tar)<<std::endl;
+		all_in_data_src.push_back(src);
+		all_in_data_tar.push_back(tar);
 		dat_num ++;
 	}
-	//std::cout<<dat_num<<" datas length :"<<total_path/dat_num<<std::endl;
+	a = clock();
+	for(int i = 0; i<dat_num; i++)total_path += Dijkstra_Algorithm(all_in_data_src.at(i),all_in_data_tar.at(i));
+	b = clock();
+	time_of_array = b-a;
+	a = clock();
+	for(int i = 0; i<dat_num; i++)total_path_q+= dijkstra_with_priority_queue(all_in_data_src.at(i),all_in_data_tar.at(i));
+	b = clock();
+	time_of_queue = b-a;
+	std::cout<<"In araay, X(edge) :"<<edge<< \
+		" ;y(length) :"<<length<< \
+		" ;z(times) :"<<dat_num<< \
+		" ;datas length :"<<total_path/dat_num<< \
+		" ;spent (s):"<<time_of_array<<std::endl;
+	std::cout<<"In priority queue,X(edge) :"<<edge<< \
+		" ;y(length) :"<<length<< \
+		" ;z(times) :"<<dat_num<< \
+		" ;datas length :"<<total_path_q/dat_num<< \
+		" ;spent (s):"<<time_of_queue<<std::endl;
 	glFlush();
 	return ;
 }

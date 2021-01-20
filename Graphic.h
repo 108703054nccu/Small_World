@@ -8,7 +8,7 @@ class graphic:public draw_funtion{
 	public:
 		graphic();
 		~graphic();
-		void GeneratorEdge(int);
+		int GeneratorEdge(int);
 		void ShowGraphic(void);
 		int Dijkstra_Algorithm(int,int);
 		int dijkstra_with_priority_queue(int,int);

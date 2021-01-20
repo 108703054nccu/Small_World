@@ -6,12 +6,13 @@ void displayMe(void){
 }
 int main(int argc, char** argv){
 	graphic g;
-	glutInit(&argc, argv);
+	g.ShowGraphic();
+	/*glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_SINGLE);
 	glutInitWindowSize(1000, 1000);
 	glutInitWindowPosition(0, 0);
 	glutCreateWindow("Draw_Result");
 	glutDisplayFunc(displayMe);
-	glutMainLoop();
+	glutMainLoop();*/
 	return 0;
 }
