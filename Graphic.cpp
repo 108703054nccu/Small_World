@@ -103,14 +103,14 @@ int graphic::GeneratorEdge(int n){
 			distance[num1][num2] = d;
 			distance[num2][num1] = d;
 		}
-		/*
+		
 		draw_line( \
 				nodes[num1].getPointX(), \
 				nodes[num1].getPointY(), \
 				nodes[num2].getPointX(), \
 				nodes[num2].getPointY()
 			 );
-		*/
+		
 	}
 	return d;
 }
@@ -128,7 +128,6 @@ void graphic::ShowGraphic(void){
 	int a,b;
 	std::vector<int> all_in_data_src;
 	std::vector<int> all_in_data_tar;
-	/*
 	for(int i = 0; i<Node_Num; i++){
 		if(i+1<Node_Num){
 			draw_line( \
@@ -148,7 +147,6 @@ void graphic::ShowGraphic(void){
 
 		}
 	}
-	*/
 	edge = 100;
 	length = GeneratorEdge(edge);
 	while(std::cin>>src>>tar){
